@@ -14,7 +14,7 @@ framework.db.hosts.each do |host|
             	self.run_single("set SSL false")
             end
             self.run_single("set RPORT #{serv.port}")
-            self.run_single("set RHOST #{host.address}")
+            self.run_single("set RHOSTS #{host.address}")
             self.run_single("exploit")
         end
     end
