@@ -1,6 +1,6 @@
 <ruby>
 
-def autorun_mod(mod, regex, ports)
+def autorun_mod(mod, regex)
     run_single("use #{mod}")
     framework.db.hosts.each do |host|
         host.services.each do |serv|
