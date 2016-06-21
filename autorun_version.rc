@@ -1,13 +1,12 @@
 <ruby>
-# auto run version modules on all services
-def autorun_mod(mod, regex_sname)
+
+def autorun_mod(mod, regex, ports)
     run_single("use #{mod}")
     framework.db.hosts.each do |host|
         host.services.each do |serv|
             next if not serv.host
-            if(serv.name =~ /#{regex_sname}/) # service name (http, ssh, ssl, ftp, ...)
-                print_good("Running against #{host.address}:#{serv.port} ...")
-                
+            # service name (http, ssh, ssl, ftp, ...)
+            if (serv.name =~ /#{regex}/ or serv.info =~ /#{regex}/)
                 # SSL need to be set?
                 if(serv.name =~ /ssl|https/)
                     run_single("set SSL true")
@@ -21,6 +20,7 @@ def autorun_mod(mod, regex_sname)
                 run_single("set RHOST #{host.address}")
 
                 # let it go...
+                print_good("Running against #{host.address}:#{serv.port} ...")                
                 run_single("run")
             end
         end
@@ -28,11 +28,6 @@ def autorun_mod(mod, regex_sname)
     run_single("back")
 end
 
-# generate version modules...
-# # pwd
-# /pentest/metasploit-framework
-# # find . -iname '*_version*' | grep -i auxiliary | cut -f3- -d'/' | cut -f1 -d\. | xargs -i echo 'autorun_mod("{}", "xxx")'
-#
-autorun_mod("auxiliary/scanner/ssh/ssh_version", "ssh")
+autorun_mod("auxiliary/scanner/lotus/lotus_domino_version", "Lotus.Domino")
 
 </ruby>
