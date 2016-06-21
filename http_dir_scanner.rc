@@ -1,5 +1,7 @@
 <ruby>
 self.run_single("use auxiliary/scanner/http/dir_scanner")
+# set to 16 threads
+self.run_single("set THREADS 13")
 
 framework.db.hosts.each do |host|
     host.services.each do |serv|
