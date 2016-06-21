@@ -1,8 +1,7 @@
 <ruby>
 # auto run version modules on all services
-
 def autorun_mod(mod, regex_sname)
-    self.run_single("use #{regex_sname}")
+    run_single("use #{mod}")
     framework.db.hosts.each do |host|
         host.services.each do |serv|
             next if not serv.host
@@ -11,21 +10,22 @@ def autorun_mod(mod, regex_sname)
                 
                 # SSL need to be set?
                 if(serv.name =~ /ssl|https/)
-                    self.run_single("set SSL true")
+                    run_single("set SSL true")
                 else
                     # explicit is better than implicit... ;)
-                    self.run_single("set SSL false")
+                    run_single("set SSL false")
                 end
                 # set vars
-                self.run_single("set RPORT #{serv.port}")
-                self.run_single("set RHOSTS #{host.address}")
-                self.run_single("set RHOST #{host.address}")
+                run_single("set RPORT #{serv.port}")
+                run_single("set RHOSTS #{host.address}")
+                run_single("set RHOST #{host.address}")
 
                 # let it go...
-                self.run_single("run")
+                run_single("run")
             end
         end
     end
+    run_single("back")
 end
 
 # generate version modules...
@@ -33,6 +33,6 @@ end
 # /pentest/metasploit-framework
 # # find . -iname '*_version*' | grep -i auxiliary | cut -f3- -d'/' | cut -f1 -d\. | xargs -i echo 'autorun_mod("{}", "xxx")'
 #
-autorun_mod("auxiliary/scanner/ssh/ssh_version", "xxx")
+autorun_mod("auxiliary/scanner/ssh/ssh_version", "ssh")
 
 </ruby>
