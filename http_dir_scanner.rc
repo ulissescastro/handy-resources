@@ -1,0 +1,22 @@
+<ruby>
+self.run_single("use auxiliary/scanner/http/dir_scanner")
+
+framework.db.hosts.each do |host|
+    host.services.each do |serv|
+        next if not serv.host
+        # next if (serv.state != Msf::ServiceState::Open)
+        if(serv.info =~ /http/) # or serv.name =~ /ms-sql/)
+            print_good("Exploiting #{host.address}:#{serv.port} ...")
+            # check if there is ssl
+            if(serv.name =~ /ssl/ or serv.name =~ /https/)
+                self.run_single("set SSL true")
+            else
+                self.run_single("set SSL false")
+            end
+            self.run_single("set RPORT #{serv.port}")
+            self.run_single("set RHOSTS #{host.address}")
+            self.run_single("exploit")
+        end
+    end
+end
+</ruby>
