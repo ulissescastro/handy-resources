@@ -1,4 +1,5 @@
 <ruby>
+# auto run version modules on all services
 
 def autorun_mod(mod, regex_sname)
     self.run_single("use #{regex_sname}")
@@ -21,12 +22,17 @@ def autorun_mod(mod, regex_sname)
                 self.run_single("set RHOST #{host.address}")
 
                 # let it go...
-                self.run_single("exploit")
+                self.run_single("run")
             end
         end
     end
 end
 
-autorun_mod("auxiliary/scanner/http/title", "http")
+# generate version modules...
+# # pwd
+# /pentest/metasploit-framework
+# # find . -iname '*_version*' | grep -i auxiliary | cut -f3- -d'/' | cut -f1 -d\. | xargs -i echo 'autorun_mod("{}", "xxx")'
+#
+autorun_mod("auxiliary/scanner/ssh/ssh_version", "xxx")
 
 </ruby>
