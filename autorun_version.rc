@@ -29,5 +29,6 @@ def autorun_mod(mod, regex)
 end
 
 autorun_mod("auxiliary/scanner/lotus/lotus_domino_version", "Lotus.Domino")
+autorun_mod("auxiliary/scanner/telnet/telnet_version", "telnet")
 
 </ruby>
