@@ -1,0 +1,32 @@
+<ruby>
+
+def autorun_mod(mod, regex_sname)
+    self.run_single("use #{regex_sname}")
+    framework.db.hosts.each do |host|
+        host.services.each do |serv|
+            next if not serv.host
+            if(serv.name =~ /#{regex_sname}/) # service name (http, ssh, ssl, ftp, ...)
+                print_good("Running against #{host.address}:#{serv.port} ...")
+                
+                # SSL need to be set?
+                if(serv.name =~ /ssl|https/)
+                    self.run_single("set SSL true")
+                else
+                    # explicit is better than implicit... ;)
+                    self.run_single("set SSL false")
+                end
+                # set vars
+                self.run_single("set RPORT #{serv.port}")
+                self.run_single("set RHOSTS #{host.address}")
+                self.run_single("set RHOST #{host.address}")
+
+                # let it go...
+                self.run_single("exploit")
+            end
+        end
+    end
+end
+
+autorun_mod("auxiliary/scanner/http/title", "http")
+
+</ruby>
